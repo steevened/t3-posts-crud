@@ -20,11 +20,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Navbar />
       <Tabbar />
       <div
-        className={`min-h-screen  pt-[45px] transition-all  ${
-          sidebarOpen ? "pl-[182px]" : "pl-[55px]"
+        className={`min-h-screen pt-[45px] transition-all  ${
+          sidebarOpen ? "sm:pl-[182px]" : "sm:pl-[55px]"
         }`}
       >
-        <Component {...pageProps} />
+        <div className="m-5">
+          <Component {...pageProps} />
+        </div>
       </div>
     </SessionProvider>
   );

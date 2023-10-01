@@ -75,7 +75,7 @@
   }
 }
 @layer utilities {
-  test {
+  .test {
     @apply border border-red-500;
   }
 }
