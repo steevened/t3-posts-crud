@@ -1,6 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import Link from "next/link";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -9,31 +8,32 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import useUIStore from "store/ui/ui-store";
 
 // interface navbarProps {}
 
 const Navbar: FC = ({}) => {
   const { data: sessionData } = useSession();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { sidebarOpen, setSidebarOpen } = useUIStore();
 
   //   console.log(sessionData);
 
   return (
     <header className="antialiased">
-      <nav className="fixed h-full border-r bg-background  px-2 py-2.5 text-foreground">
+      <nav className="fixed z-10 h-full border-r bg-background  px-2 py-2.5 text-foreground">
         <div className="flex h-full flex-col items-center justify-between">
           <div
             className={`flex gap-2 transition-all duration-200 ${
-              isExpanded ? "flex-row-reverse" : "flex-col"
+              sidebarOpen ? "flex-row-reverse" : "flex-col"
             }`}
           >
             <Button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
               variant={"outline"}
               size={"icon"}
               className="transition-all"
             >
-              {isExpanded ? (
+              {sidebarOpen ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -67,7 +67,7 @@ const Navbar: FC = ({}) => {
             </Button>
             <Button
               variant={"outline"}
-              size={isExpanded ? "default" : "icon"}
+              size={sidebarOpen ? "default" : "icon"}
               className="flex items-center gap-2 transition-all"
             >
               <svg
@@ -84,7 +84,9 @@ const Navbar: FC = ({}) => {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              {isExpanded && <span className="whitespace-nowrap">Add new</span>}
+              {sidebarOpen && (
+                <span className="whitespace-nowrap">Add new</span>
+              )}
             </Button>
           </div>
           <div>
@@ -117,11 +119,11 @@ const Navbar: FC = ({}) => {
               <div>
                 <Button
                   variant={"outline"}
-                  size={isExpanded ? "default" : "icon"}
+                  size={sidebarOpen ? "default" : "icon"}
                   onClick={() => void signIn()}
                   className="flex items-center gap-2 transition-all"
                 >
-                  {isExpanded && (
+                  {sidebarOpen && (
                     <span className="whitespace-nowrap">Sign In</span>
                   )}
                   <svg
