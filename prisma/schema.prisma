@@ -51,6 +51,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    posts         Post[]
 }
 
 model VerificationToken {
@@ -67,7 +68,8 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     published Boolean  @default(false)
-    authorId  String
+    authorId  String 
+    author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
     @@index([authorId])
 }

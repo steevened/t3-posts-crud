@@ -11,7 +11,7 @@ export default function Home() {
     isLoading,
   } = api.posts.getAll.useQuery();
 
-  console.log(posts);
+  console.log(error);
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function Home() {
       </Head>
       <main className="@container">
         <div className="mx-auto w-full max-w-lg">
-          <ul>
+          <ul className="space-y-5">
             {posts?.map((post) => (
               <li key={post.id}>
                 <PostCard

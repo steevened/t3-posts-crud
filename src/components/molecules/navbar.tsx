@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import useUIStore from "store/ui/ui-store";
+import AddPost from "./add-post";
 
 // interface navbarProps {}
 
@@ -67,29 +68,7 @@ const Navbar: FC = ({}) => {
                 )}
               </Button>
             </div>
-            <Button
-              variant={"outline"}
-              size={sidebarOpen ? "default" : "icon"}
-              className="flex items-center gap-2 transition-all"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              {sidebarOpen && (
-                <span className="whitespace-nowrap">Add new</span>
-              )}
-            </Button>
+            <AddPost />
           </div>
           <div>
             {sessionData ? (
