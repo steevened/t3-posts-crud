@@ -9,7 +9,7 @@ const Tabbar: FC = ({}) => {
   return (
     <nav
       className={`fixed right-0 top-0 grid w-full grid-cols-2 border-b  text-center transition-all ${
-        sidebarOpen ? "sm:left-[180.5px]" : "sm:left-[52.5px]"
+        sidebarOpen ? "sm:pl-[180.5px]" : "sm:pl-[52.5px]"
       }`}
     >
       <Link

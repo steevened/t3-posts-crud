@@ -14,14 +14,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 
-    @@index([name])
-}
 
 // Necessary for Next auth
 model Account {
@@ -58,7 +51,6 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
 }
 
 model VerificationToken {
@@ -70,12 +62,11 @@ model VerificationToken {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    content   String
+    id        String    @id @default(cuid())
+    content   String    
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     published Boolean  @default(false)
-    author    User     @relation(fields: [authorId], references: [id])
     authorId  String
 
     @@index([authorId])

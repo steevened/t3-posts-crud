@@ -1,11 +1,17 @@
 import Head from "next/head";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const posts = api.posts.getAll.useQuery();
+  const {
+    data: posts,
+    error,
+    isError,
+    isLoading,
+  } = api.posts.getAll.useQuery();
 
-  console.log(posts.data);
+  console.log(posts);
 
   return (
     <>
@@ -15,11 +21,52 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="@container">
-        <div className="mx-auto w-full max-w-lg ">main page</div>
+        <div className="mx-auto w-full max-w-lg">
+          <ul>
+            {posts?.map((post) => (
+              <li key={post.id}>
+                <PostCard
+                  content={post.content}
+                  authorId={post.authorId}
+                  createdAt={post.createdAt}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       </main>
     </>
   );
 }
+
+const PostCard = ({
+  content,
+  authorId,
+  createdAt,
+}: {
+  content: string;
+  authorId: string;
+  createdAt: Date;
+}) => {
+  const { data: user } = api.users.getById.useQuery({ id: authorId });
+  return (
+    <div className="flex items-center gap-5 rounded border p-5">
+      <Avatar>
+        <AvatarImage src={user?.image ?? ""} />
+        <AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
+      </Avatar>
+      <div className=" w-full space-y-2.5">
+        <div className="flex justify-between">
+          <h3 className="text-sm text-muted-foreground">@{user?.name}</h3>
+          <p className="text-sm text-muted-foreground">
+            {new Date(createdAt).toLocaleDateString()}
+          </p>
+        </div>
+        <p>{content}</p>
+      </div>
+    </div>
+  );
+};
 
 // function AuthShowcase() {
 //   const { data: sessionData } = useSession();
