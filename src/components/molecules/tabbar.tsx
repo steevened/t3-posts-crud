@@ -8,7 +8,7 @@ const Tabbar: FC = ({}) => {
   const router = useRouter();
   return (
     <nav
-      className={`fixed right-0 top-0 grid w-full grid-cols-2 border-b  text-center transition-all ${
+      className={`fixed right-0 top-0 z-10 grid w-full grid-cols-2 border-b bg-background  text-center transition-all ${
         sidebarOpen ? "sm:pl-[180.5px]" : "sm:pl-[52.5px]"
       }`}
     >

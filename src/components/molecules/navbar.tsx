@@ -21,7 +21,7 @@ const Navbar: FC = ({}) => {
 
   return (
     <header className="antialiased">
-      <nav className="fixed z-10 bg-background px-2 py-2.5 text-foreground max-sm:bottom-0 max-sm:w-full  max-sm:border-t sm:h-full sm:border-r">
+      <nav className="fixed z-30 bg-background px-2 py-2.5 text-foreground max-sm:bottom-0  max-sm:w-full max-sm:border-t sm:h-full sm:border-r">
         <div className="flex h-full items-center justify-between sm:flex-col">
           <div
             className={`flex gap-2 transition-all duration-200  ${
@@ -70,17 +70,32 @@ const Navbar: FC = ({}) => {
             </div>
             <AddPost />
           </div>
-          <div>
+          <div className="">
             {sessionData ? (
               <div>
                 {sessionData?.user?.image && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button>
+                      <Button
+                        variant={"ghost"}
+                        size={"icon"}
+                        className="flex h-full w-full items-start gap-1 p-2"
+                      >
                         <Avatar>
                           <AvatarImage src={sessionData?.user?.image} />
                         </Avatar>
-                      </button>
+                        {sidebarOpen && (
+                          <div className="h-full text-start">
+                            <p className="text-muted-foreground">
+                              @{sessionData.user.name}
+                            </p>
+                            <p className="">
+                              {sessionData.user.email?.slice(0, 11)}
+                              {"..."}
+                            </p>
+                          </div>
+                        )}
+                      </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem asChild>

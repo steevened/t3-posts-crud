@@ -20,7 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="@container">
-        <div className="mx-auto w-full max-w-lg">
+        <div className="mx-auto my-6 w-full max-w-lg">
           <ul className="space-y-5">
             {posts?.map((post) => (
               <li key={post.id}>
