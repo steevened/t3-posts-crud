@@ -20,6 +20,7 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { api } from "~/utils/api";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   content: z.string().min(2).max(300, {
@@ -29,6 +30,10 @@ const formSchema = z.object({
 });
 
 const AddPost = ({}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
+
   const { sidebarOpen } = useUIStore();
 
   const { data: session } = useSession();
@@ -49,16 +54,30 @@ const AddPost = ({}) => {
     try {
       const authorId = session?.user?.id;
       if (!authorId) return;
+
       const data = { content, authorId };
+
       const mutation = postMutation.mutate(data);
+      setIsSaved(true);
       console.log(mutation);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    setIsSaved(false);
+    const delay = setTimeout(() => {
+      const data = form.getValues();
+      onSubmit(data);
+    }, 2000);
+
+    // Clear the previous timeout when the content input changes again
+    return () => clearTimeout(delay);
+  }, [form.watch("content")]);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
           variant={"outline"}
@@ -99,7 +118,10 @@ const AddPost = ({}) => {
                 </FormItem>
               )}
             />
-            <DialogFooter className="my-5">
+            <DialogFooter className="my-5 justify-between">
+              <Button variant={"secondary"}>
+                {isSaved ? <p>Saved</p> : <p>Saving</p>}
+              </Button>
               <Button type="submit">Submit</Button>
             </DialogFooter>
           </form>

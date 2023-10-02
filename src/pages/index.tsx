@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useDebounce } from "~/hooks/useDebounce";
 
 import { api } from "~/utils/api";
 
@@ -10,8 +11,6 @@ export default function Home() {
     isError,
     isLoading,
   } = api.posts.getAll.useQuery();
-
-  console.log(error);
 
   return (
     <>
