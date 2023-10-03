@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useUIStore from "store/ui/ui-store";
 import * as z from "zod";
+import { api } from "~/utils/api";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -19,8 +21,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { api } from "~/utils/api";
-import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   content: z.string().min(2).max(300, {
@@ -31,8 +31,6 @@ const formSchema = z.object({
 
 const AddPost = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  // const [isSaved, setIsSaved] = useState(false);
 
   const { sidebarOpen } = useUIStore();
 
@@ -59,6 +57,8 @@ const AddPost = ({}) => {
 
       const mutation = postMutation.mutate(data);
       // setIsSaved(true);
+      setIsOpen(!isOpen);
+      form.reset();
       console.log(mutation);
     } catch (error) {
       console.log(error);

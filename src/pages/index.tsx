@@ -1,6 +1,5 @@
 import Head from "next/head";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { useDebounce } from "~/hooks/useDebounce";
+import { PostCard } from "~/components/molecules/post-card";
 
 import { api } from "~/utils/api";
 
@@ -37,35 +36,6 @@ export default function Home() {
     </>
   );
 }
-
-const PostCard = ({
-  content,
-  authorId,
-  createdAt,
-}: {
-  content: string;
-  authorId: string;
-  createdAt: Date;
-}) => {
-  const { data: user } = api.users.getById.useQuery({ id: authorId });
-  return (
-    <div className="flex items-center gap-5 rounded border p-4">
-      <Avatar>
-        <AvatarImage src={user?.image ?? ""} />
-        <AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
-      </Avatar>
-      <div className=" w-full space-y-2.5">
-        <div className="flex justify-between">
-          <h3 className="text-sm text-muted-foreground">@{user?.name}</h3>
-          <p className="text-sm text-muted-foreground">
-            {new Date(createdAt).toLocaleDateString()}
-          </p>
-        </div>
-        <p>{content}</p>
-      </div>
-    </div>
-  );
-};
 
 // function AuthShowcase() {
 //   const { data: sessionData } = useSession();
