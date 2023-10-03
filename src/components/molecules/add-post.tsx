@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import useUIStore from "store/ui/ui-store";
 import * as z from "zod";
@@ -76,6 +76,33 @@ const AddPost = ({}) => {
   //   return () => clearTimeout(delay);
   // }, [form.watch("content")]);
 
+  if (!session?.user?.id) {
+    return (
+      <Button
+        variant={"outline"}
+        size={sidebarOpen ? "default" : "icon"}
+        className="flex items-center gap-2 transition-all"
+        onClick={() => void signIn()}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="h-6 w-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+        {sidebarOpen && <span className="whitespace-nowrap">Add new</span>}
+      </Button>
+    );
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -119,7 +146,7 @@ const AddPost = ({}) => {
               )}
             />
             <DialogFooter className="my-5 justify-between">
-              <Button variant={"secondary"}>
+              <Button type="button" variant={"secondary"}>
                 {/* {isSaved ? <p>Saved</p> : <p>Saving</p>} */}
                 Save
               </Button>

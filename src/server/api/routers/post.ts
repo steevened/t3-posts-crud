@@ -7,6 +7,19 @@ export const PostRouter = createTRPCRouter({
       where: { published: true },
     });
   }),
+  getOne: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      }),
+    )
+    .query((opts) => {
+      return opts.ctx.db.post.findUnique({
+        where: {
+          id: opts.input.id,
+        },
+      });
+    }),
   create: protectedProcedure
     .input(
       z.object({
@@ -19,6 +32,42 @@ export const PostRouter = createTRPCRouter({
         data: {
           content: opts.input.content,
           authorId: opts.input.authorId,
+        },
+      });
+      return post;
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        content: z.string(),
+      }),
+    )
+    .mutation(async (opts) => {
+      const post = await opts.ctx.db.post.update({
+        where: {
+          id: opts.input.id,
+        },
+        data: {
+          content: opts.input.content,
+        },
+      });
+      return post;
+    }),
+
+  publish: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      }),
+    )
+    .mutation(async (opts) => {
+      const post = await opts.ctx.db.post.update({
+        where: {
+          id: opts.input.id,
+        },
+        data: {
+          published: true,
         },
       });
       return post;
