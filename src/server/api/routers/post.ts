@@ -7,6 +7,11 @@ export const PostRouter = createTRPCRouter({
       where: { published: true },
     });
   }),
+  getDrafts: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.post?.findMany({
+      where: { published: false },
+    });
+  }),
   getOne: publicProcedure
     .input(
       z.object({
