@@ -32,7 +32,7 @@ const formSchema = z.object({
 const AddPost = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [isSaved, setIsSaved] = useState(false);
+  // const [isSaved, setIsSaved] = useState(false);
 
   const { sidebarOpen } = useUIStore();
 
@@ -58,23 +58,23 @@ const AddPost = ({}) => {
       const data = { content, authorId };
 
       const mutation = postMutation.mutate(data);
-      setIsSaved(true);
+      // setIsSaved(true);
       console.log(mutation);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    setIsSaved(false);
-    const delay = setTimeout(() => {
-      const data = form.getValues();
-      onSubmit(data);
-    }, 2000);
+  // useEffect(() => {
+  //   setIsSaved(false);
+  //   const delay = setTimeout(() => {
+  //     const data = form.getValues();
+  //     onSubmit(data);
+  //   }, 2000);
 
-    // Clear the previous timeout when the content input changes again
-    return () => clearTimeout(delay);
-  }, [form.watch("content")]);
+  //   // Clear the previous timeout when the content input changes again
+  //   return () => clearTimeout(delay);
+  // }, [form.watch("content")]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -120,7 +120,8 @@ const AddPost = ({}) => {
             />
             <DialogFooter className="my-5 justify-between">
               <Button variant={"secondary"}>
-                {isSaved ? <p>Saved</p> : <p>Saving</p>}
+                {/* {isSaved ? <p>Saved</p> : <p>Saving</p>} */}
+                Save
               </Button>
               <Button type="submit">Submit</Button>
             </DialogFooter>

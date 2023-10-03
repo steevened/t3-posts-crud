@@ -49,7 +49,7 @@ const PostCard = ({
 }) => {
   const { data: user } = api.users.getById.useQuery({ id: authorId });
   return (
-    <div className="flex items-center gap-5 rounded border p-5">
+    <div className="flex items-center gap-5 rounded border p-4">
       <Avatar>
         <AvatarImage src={user?.image ?? ""} />
         <AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
