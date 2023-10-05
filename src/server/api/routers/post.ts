@@ -1,9 +1,10 @@
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const PostRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.post?.findMany({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.post?.findMany({
+      take: 100,
       where: { published: true },
     });
   }),

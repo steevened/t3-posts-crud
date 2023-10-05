@@ -46,7 +46,7 @@ const AddPost = ({}) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { content } = values;
 
     try {
@@ -55,7 +55,7 @@ const AddPost = ({}) => {
 
       const data = { content, authorId };
 
-      const mutation = postMutation.mutate(data);
+      const mutation = await postMutation.mutateAsync(data);
       // setIsSaved(true);
       setIsOpen(!isOpen);
       form.reset();
