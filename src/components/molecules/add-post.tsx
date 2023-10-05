@@ -36,30 +36,33 @@ const AddPost = ({}) => {
 
   const { data: session } = useSession();
 
-  const postMutation = api.posts.create.useMutation();
+  const cxt = api.useContext();
+
+  const { mutate, isLoading } = api.posts.create.useMutation({
+    onSuccess: () => {
+      void cxt.posts.getAll.invalidate();
+      void cxt.posts.getDrafts.invalidate();
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       content: "",
-      authorId: session?.user?.id,
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     const { content } = values;
 
     try {
-      const authorId = session?.user?.id;
-      if (!authorId) return;
-
-      const data = { content, authorId };
-
-      const mutation = await postMutation.mutateAsync(data);
+      mutate({
+        content,
+      });
       // setIsSaved(true);
       setIsOpen(!isOpen);
       form.reset();
-      console.log(mutation);
+      // console.log(mutation);
     } catch (error) {
       console.log(error);
     }
@@ -146,7 +149,7 @@ const AddPost = ({}) => {
               )}
             />
             <DialogFooter className="my-5 justify-between">
-              <Button type="button" variant={"secondary"}>
+              <Button type="button" variant={"secondary"} disabled={isLoading}>
                 {/* {isSaved ? <p>Saved</p> : <p>Saving</p>} */}
                 Save
               </Button>

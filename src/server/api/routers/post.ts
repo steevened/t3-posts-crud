@@ -1,18 +1,26 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { useSession } from "next-auth/react";
-import { TRPCError } from "@trpc/server";
 
 export const PostRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.post?.findMany({
       take: 100,
       where: { published: true },
+      orderBy: [
+        {
+          createdAt: "desc",
+        },
+      ],
     });
   }),
   getDrafts: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db.post?.findMany({
       where: { published: false },
+      orderBy: [
+        {
+          createdAt: "desc",
+        },
+      ],
     });
   }),
   getOne: publicProcedure
@@ -32,20 +40,13 @@ export const PostRouter = createTRPCRouter({
     .input(
       z.object({
         content: z.string(),
-        authorId: z.string().cuid(),
       }),
     )
     .mutation(async (opts) => {
-      const session = useSession();
-      if (!session ?? !session.data)
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You must be logged in to create a post",
-        });
       const post = await opts.ctx.db.post.create({
         data: {
           content: opts.input.content,
-          authorId: session.data?.user.id,
+          authorId: opts.ctx.session.user.id,
         },
       });
       return post;
